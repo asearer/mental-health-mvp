@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import Navbar from "./components/Navbar"; // Import the Navbar component
+import PatientDetail from "./components/PatientDetail"; // Import the PatientDetail component
 import './App.css';
 
-function App() {
+// A simple NotFound component for unmatched routes
+const NotFound = () => <h2>404 - Page Not Found</h2>;
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <>
+        <Navbar /> {/* Add Navbar here */}
+        <main>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* Add the PatientDetail route with :id */}
+            <Route path="/patients/:id" element={<PatientDetail />} />
+            <Route path="/" element={<Login />} />
+            {/* Catch-all route for 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+      </>
+    </Router>
   );
-}
+};
 
 export default App;
+
+
+
+
+

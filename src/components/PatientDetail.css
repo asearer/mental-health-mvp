@@ -1,0 +1,83 @@
+/* src/components/PatientDetail.css */
+
+.patient-detail-container {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto; /* Center horizontally */
+    margin-top: 60px; /* Position higher on the page */
+    top: -550px;
+    position: relative;
+    left: 140px;
+}
+
+/* Title Styling */
+h2 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+    width: 100%;
+}
+
+/* Paragraph and Text Styling */
+p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+strong {
+    color: #333;
+}
+
+/* Loading State */
+.loading {
+    font-size: 1.1rem;
+    color: #888;
+    text-align: center;
+    width: 100%;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .patient-detail-container {
+        padding: 15px;
+        margin-top: 40px; /* Adjusts the position slightly lower on medium screens */
+    }
+
+    h2 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .patient-detail-container {
+        padding: 10px;
+        margin-top: 30px; /* Positions the container even higher on small screens */
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+}
+
+
+

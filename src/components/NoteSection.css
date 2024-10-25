@@ -1,0 +1,20 @@
+/* NoteSection.css */
+.note-section {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.note {
+    margin-bottom: 15px;
+}
+
+.note-title {
+    font-weight: bold;
+}
+
+.note-content {
+    color: #555;
+}
