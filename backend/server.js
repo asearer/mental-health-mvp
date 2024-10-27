@@ -85,6 +85,76 @@ app.post('/api/patients/:id/notes', (req, res) => {
   res.status(200).json({ message: 'Note saved successfully!' });
 });
 
+// Add a new patient
+app.post("/api/patients", (req, res) => {
+  const { name, age, info } = req.body;
+  const newPatient = { id: patients.length + 1, name, age, info };
+  patients.push(newPatient);
+  res.json(newPatient);
+});
+
+// Update a patient
+app.put("/api/patients/:id", (req, res) => {
+  const patient = patients.find(p => p.id === parseInt(req.params.id));
+  if (patient) {
+    patient.name = req.body.name;
+    patient.age = req.body.age;
+    patient.info = req.body.info;
+    res.json(patient);
+  } else {
+    res.status(404).json({ message: "Patient not found" });
+  }
+});
+
+// Delete a patient
+app.delete("/api/patients/:id", (req, res) => {
+  const patient = patients.find(p => p.id === parseInt(req.params.id));
+  if (patient) {
+    const index = patients.indexOf(patient);
+    patients.splice(index, 1);
+    res.json(patient);
+  } else {
+    res.status(404).json({ message: "Patient not found" });
+  }
+});
+
+// Get patient notes
+app.get("/api/patients/:id/notes", (req, res) => {
+  const patientId = req.params.id;
+  if (patientNotes[patientId]) {
+    res.json(patientNotes[patientId]);
+  } else {
+    res.status(404).json({ message: "Patient notes not found" });
+  }
+});
+
+// Get specific patient note
+app.get("/api/patients/:id/notes/:noteId", (req, res) => {
+  const patientId = req.params.id;
+  const noteId = req.params.noteId;
+  if (patientNotes[patientId] && patientNotes[patientId][noteId]) {
+    res.json(patientNotes[patientId][noteId]);
+  } else {
+    res.status(404).json({ message: "Patient note not found" });
+  }
+});
+
+// Get specific patient note by date
+app.get("/api/patients/:id/notes/:date", (req, res) => {
+  const patientId = req.params.id;
+  const date = req.params.date;
+  if (patientNotes[patientId]) {
+    const notes = patientNotes[patientId].filter(note => note.date === date);
+    if (notes.length > 0) {
+      res.json(notes[0]);
+    } else {
+      res.status(404).json({ message: "Patient note not found" });
+    }
+  } else {
+    res.status(404).json({ message: "Patient notes not found" });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
