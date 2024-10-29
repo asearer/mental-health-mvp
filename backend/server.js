@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Sample patient data with additional mock data
 let patients = [
-  { id: 1, name: "John Doe", age: 30, info: "No known allergies. Arachnaphobia unlikely." },
+  { id: 1, name: "John Doe", age: 30, info: "No known allergies. Arachnophobia unlikely." },
   { id: 2, name: "Jane Smith", age: 25, info: "Has a peanut allergy." },
   { id: 3, name: "Alice Johnson", age: 40, info: "Regular check-ups required." },
   { id: 4, name: "Michael Brown", age: 55, info: "History of hypertension." },
@@ -34,6 +34,11 @@ let patientNotes = {};
 let groups = {}; // Structure: { groupId: { name, description, patients: [] }}
 let sessions = {}; // Structure: { patientId: [{ date, duration, counselor, notes }]}
 
+// Helper Functions
+const findPatientById = (id) => patients.find(p => p.id === parseInt(id));
+const findGroupById = (groupId) => groups[groupId];
+const validateRequest = (req, requiredFields) => requiredFields.every(field => req.body[field]);
+
 // Routes
 
 // Get all patients
@@ -43,7 +48,7 @@ app.get("/api/patients", (req, res) => {
 
 // Get a specific patient by ID with notes
 app.get("/api/patients/:id", (req, res) => {
-  const patient = patients.find(p => p.id === parseInt(req.params.id));
+  const patient = findPatientById(req.params.id);
   if (patient) {
     const notes = patientNotes[req.params.id] || [];
     res.json({ ...patient, therapyNotes: notes });
@@ -59,7 +64,7 @@ app.post('/api/patients/:id/notes', (req, res) => {
 
   if (!note) return res.status(400).json({ message: "Invalid note" });
 
-  if (!patientNotes[patientId]) patientNotes[patientId] = [];
+  patientNotes[patientId] = patientNotes[patientId] || [];
   
   const newNote = { date: new Date().toISOString(), counselor, content: note };
   patientNotes[patientId].push(newNote);
@@ -76,7 +81,7 @@ app.post("/api/patients", (req, res) => {
 
 // Update patient details
 app.put("/api/patients/:id", (req, res) => {
-  const patient = patients.find(p => p.id === parseInt(req.params.id));
+  const patient = findPatientById(req.params.id);
   if (patient) {
     Object.assign(patient, req.body);
     res.json(patient);
@@ -125,21 +130,40 @@ app.post("/api/groups", (req, res) => {
   res.json({ groupId, ...groups[groupId] });
 });
 
+// Get a specific group by ID
+app.get("/api/groups/:groupId", (req, res) => {
+  const group = findGroupById(req.params.groupId);
+  if (group) {
+    res.json(group);
+  } else {
+    res.status(404).json({ message: "Group not found" });
+  }
+});
+
 // Add a patient to a group
 app.post("/api/groups/:groupId/patients/:patientId", (req, res) => {
   const { groupId, patientId } = req.params;
-  if (!groups[groupId]) return res.status(404).json({ message: "Group not found" });
-  
-  const patient = patients.find(p => p.id == patientId);
-  if (!patient) return res.status(404).json({ message: "Patient not found" });
+  const group = findGroupById(groupId);
+  const patient = findPatientById(patientId);
 
-  groups[groupId].patients.push(patient);
-  res.json(groups[groupId]);
+  if (!group || !patient) {
+    return res.status(404).json({ message: "Group or Patient not found" });
+  }
+
+  group.patients.push(patient);
+  res.json(group);
 });
 
-// Get all groups
-app.get("/api/groups", (req, res) => {
-  res.json(groups);
+// Remove a patient from a group
+app.delete("/api/groups/:groupId/patients/:patientId", (req, res) => {
+  const { groupId, patientId } = req.params;
+  const group = findGroupById(groupId);
+  if (group) {
+    group.patients = group.patients.filter(p => p.id !== parseInt(patientId));
+    res.json(group);
+  } else {
+    res.status(404).json({ message: "Group not found" });
+  }
 });
 
 // Therapy session management
@@ -161,7 +185,19 @@ app.get("/api/patients/:id/sessions", (req, res) => {
   res.json(sessions[patientId] || []);
 });
 
+// Delete a specific therapy session
+app.delete("/api/patients/:id/sessions/:sessionIndex", (req, res) => {
+  const { id, sessionIndex } = req.params;
+  if (sessions[id] && sessions[id][sessionIndex]) {
+    sessions[id].splice(sessionIndex, 1);
+    res.status(200).json({ message: "Session deleted successfully" });
+  } else {
+    res.status(404).json({ message: "Session not found" });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
