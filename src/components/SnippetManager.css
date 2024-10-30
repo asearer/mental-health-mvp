@@ -1,0 +1,46 @@
+.snippet-manager {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 400px;
+    margin: 20px auto;
+  }
+  
+  .snippet-form {
+    display: flex;
+    margin-bottom: 15px;
+  }
+  
+  .snippet-form input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .snippet-form button {
+    padding: 8px 12px;
+    margin-left: 5px;
+  }
+  
+  .snippet-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .snippet-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .snippet-text {
+    flex: 1;
+    cursor: pointer;
+    color: blue;
+  }
+  
+  .snippet-list button {
+    margin-left: 5px;
+  }
+  
