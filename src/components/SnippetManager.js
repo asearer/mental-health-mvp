@@ -9,6 +9,7 @@ const SnippetManager = () => {
     const [snippets, setSnippets] = useState([]);
     const [snippet, setSnippet] = useState('');
     const [editIndex, setEditIndex] = useState(null);
+    const [privacy, setPrivacy] = useState('private'); // New state for privacy setting
     const [contextMenuVisible, setContextMenuVisible] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
@@ -18,10 +19,12 @@ const SnippetManager = () => {
             alert('Snippet cannot be empty');
             return;
         }
+        
         const newSnippet = {
             text: snippet,
             owner: currentUser.name, // Store the owner of the snippet
-            date: new Date().toISOString()
+            date: new Date().toISOString(),
+            privacy, // Add privacy setting
         };
 
         if (editIndex !== null) {
@@ -31,12 +34,16 @@ const SnippetManager = () => {
         } else {
             setSnippets([...snippets, newSnippet]);
         }
+
         setSnippet('');
+        setPrivacy('private'); // Reset privacy after adding
     };
 
     // Handler to edit a snippet
     const handleEditSnippet = (index) => {
-        setSnippet(snippets[index].text);
+        const selectedSnippet = snippets[index];
+        setSnippet(selectedSnippet.text);
+        setPrivacy(selectedSnippet.privacy);
         setEditIndex(index);
     };
 
@@ -47,6 +54,7 @@ const SnippetManager = () => {
         if (editIndex === index) {
             setEditIndex(null);
             setSnippet('');
+            setPrivacy('private');
         }
     };
 
@@ -83,24 +91,34 @@ const SnippetManager = () => {
                     onChange={(e) => setSnippet(e.target.value)}
                     placeholder="Enter your snippet here"
                 />
+                <label>
+                    Privacy:
+                    <select value={privacy} onChange={(e) => setPrivacy(e.target.value)}>
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                    </select>
+                </label>
                 <button onClick={handleAddSnippet}>
                     {editIndex !== null ? 'Update Snippet' : 'Add Snippet'}
                 </button>
             </div>
             <ul className="snippet-list">
-                {snippets.map((s, index) => (
-                    <li key={index}>
-                        <span onClick={() => console.log(`Using snippet: ${s.text}`)} className="snippet-text">
-                            {s.text} <span className="snippet-owner">by {s.owner}</span>
-                        </span>
-                        {s.owner === currentUser.name ? ( // Only show edit/delete buttons for owner's snippets
-                            <>
-                                <button onClick={() => handleEditSnippet(index)}>Edit</button>
-                                <button onClick={() => handleDeleteSnippet(index)}>Delete</button>
-                            </>
-                        ) : null}
-                    </li>
-                ))}
+                {snippets
+                    .filter((s) => s.privacy === 'public' || s.owner === currentUser.name) // Show only public or owned snippets
+                    .map((s, index) => (
+                        <li key={index}>
+                            <span onClick={() => console.log(`Using snippet: ${s.text}`)} className="snippet-text">
+                                {s.text} <span className="snippet-owner">by {s.owner}</span>
+                                {s.privacy === 'public' && <span className="snippet-public"> (Public)</span>}
+                            </span>
+                            {s.owner === currentUser.name ? ( // Only show edit/delete buttons for owner's snippets
+                                <>
+                                    <button onClick={() => handleEditSnippet(index)}>Edit</button>
+                                    <button onClick={() => handleDeleteSnippet(index)}>Delete</button>
+                                </>
+                            ) : null}
+                        </li>
+                    ))}
             </ul>
             {contextMenuVisible && (
                 <div className="context-menu" style={{ left: contextMenuPosition.x, top: contextMenuPosition.y }}>
@@ -112,3 +130,4 @@ const SnippetManager = () => {
 };
 
 export default SnippetManager;
+
