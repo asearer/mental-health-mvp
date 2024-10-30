@@ -1,3 +1,4 @@
+// src/server.js
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -31,12 +32,14 @@ let patients = [
 ];
 
 let patientNotes = {};
-let groups = {}; // Structure: { groupId: { name, description, patients: [] }}
-let sessions = {}; // Structure: { patientId: [{ date, duration, counselor, notes }]}
+let snippets = []; // Store snippets
+let groups = {}; // Structure: { groupId: { name, description, patients: [] } }
+let sessions = {}; // Structure: { patientId: [{ date, duration, counselor, notes }] }
 
 // Helper Functions
 const findPatientById = (id) => patients.find(p => p.id === parseInt(id));
-const findGroupById = (groupId) => groups[groupId];
+const findGroupById = (groupId) => groups[groupId]; // Define findGroupById
+const findSnippetById = (id) => snippets[id]; // Find snippet by ID
 const validateRequest = (req, requiredFields) => requiredFields.every(field => req.body[field]);
 
 // Routes
@@ -73,6 +76,10 @@ app.post('/api/patients/:id/notes', (req, res) => {
 
 // Add a new patient
 app.post("/api/patients", (req, res) => {
+  if (!validateRequest(req, ['name', 'age', 'info'])) {
+    return res.status(400).json({ message: "Missing required fields: name, age, info." });
+  }
+  
   const { name, age, info } = req.body;
   const newPatient = { id: patients.length + 1, name, age, info };
   patients.push(newPatient);
@@ -125,6 +132,11 @@ app.get("/api/patients/:id/notes/:noteIndex", (req, res) => {
 // Add a new group
 app.post("/api/groups", (req, res) => {
   const { name, description } = req.body;
+  
+  if (!validateRequest(req, ['name', 'description'])) {
+    return res.status(400).json({ message: "Missing required fields: name, description." });
+  }
+
   const groupId = Object.keys(groups).length + 1;
   groups[groupId] = { name, description, patients: [] };
   res.json({ groupId, ...groups[groupId] });
@@ -166,6 +178,50 @@ app.delete("/api/groups/:groupId/patients/:patientId", (req, res) => {
   }
 });
 
+// Snippet Management Endpoints
+
+// Get all snippets
+app.get("/api/snippets", (req, res) => {
+  res.json(snippets);
+});
+
+// Add a new snippet
+app.post("/api/snippets", (req, res) => {
+  const { text, owner } = req.body; // expect owner info to be passed
+  if (!text || !owner) return res.status(400).json({ message: "Snippet text and owner are required." });
+
+  const newSnippet = { id: snippets.length, text, owner, date: new Date().toISOString() };
+  snippets.push(newSnippet);
+  res.status(201).json(newSnippet);
+});
+
+// Update a snippet
+app.put("/api/snippets/:id", (req, res) => {
+  const snippet = findSnippetById(req.params.id);
+  if (snippet) {
+    const { text } = req.body;
+    if (text) {
+      snippet.text = text; // Update snippet text
+      res.json(snippet);
+    } else {
+      res.status(400).json({ message: "Snippet text is required." });
+    }
+  } else {
+    res.status(404).json({ message: "Snippet not found." });
+  }
+});
+
+// Delete a snippet
+app.delete("/api/snippets/:id", (req, res) => {
+  const snippetIndex = snippets.findIndex(s => s.id === parseInt(req.params.id));
+  if (snippetIndex !== -1) {
+    const removedSnippet = snippets.splice(snippetIndex, 1)[0];
+    res.json(removedSnippet);
+  } else {
+    res.status(404).json({ message: "Snippet not found." });
+  }
+});
+
 // Therapy session management
 
 // Log a new therapy session for a patient
@@ -200,4 +256,6 @@ app.delete("/api/patients/:id/sessions/:sessionIndex", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+
 
