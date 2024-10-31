@@ -1,35 +1,47 @@
-// src/components/NoteForm.js
 import React, { useState } from "react";
 import axios from "axios";
+import ReactQuill from "react-quill"; // Import react-quill
+import "react-quill/dist/quill.snow.css"; // Import the Quill styles
 
 const NoteForm = ({ patientId }) => {
-  const [noteText, setNoteText] = useState("");
-  const [diagnosis, setDiagnosis] = useState("");
+  const [noteText, setNoteText] = useState(""); // This will hold the note content
+  const [diagnosis, setDiagnosis] = useState(""); // This will hold the diagnosis
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     await axios.post(
       `http://localhost:8000/api/patients/${patientId}/notes`,
-      { note_text: noteText, diagnosis },
+      { note_text: noteText, diagnosis }, // Send the note text and diagnosis
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    setNoteText("");
-    setDiagnosis("");
+    setNoteText(""); // Reset note text after submission
+    setDiagnosis(""); // Reset diagnosis after submission
+  };
+
+  // Custom modules for the Quill editor
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      ['link', 'image'],
+      ['clean'], // Remove formatting button
+    ],
   };
 
   return (
     <div>
       <h4>Add Note</h4>
       <form onSubmit={handleSubmit}>
-        <textarea
-          placeholder="Enter note"
-          value={noteText}
-          onChange={(e) => setNoteText(e.target.value)}
+        <ReactQuill
+          modules={modules} // Apply the custom modules
+          placeholder="Enter note" // Placeholder text for the editor
+          value={noteText} // Bind the editor's value to the state
+          onChange={setNoteText} // Update the state on change
           required
         />
         <input
