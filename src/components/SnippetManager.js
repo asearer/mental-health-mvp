@@ -1,4 +1,3 @@
-// src/components/SnippetManager.js
 import React, { useState, useEffect } from 'react';
 import './SnippetManager.css';
 
@@ -6,7 +5,30 @@ import './SnippetManager.css';
 const currentUser = { id: 1, name: 'Practitioner A' }; // Replace with actual user info
 
 const SnippetManager = () => {
-    const [snippets, setSnippets] = useState([]);
+    // Initialize with default snippets
+    const [snippets, setSnippets] = useState([
+        {
+            text: "Consider cognitive behavioral therapy for anxiety.",
+            owner: currentUser.name,
+            date: new Date().toISOString(),
+            privacy: 'public',
+            notes: "Useful for patients with generalized anxiety disorder.",
+        },
+        {
+            text: "Mindfulness techniques can reduce stress.",
+            owner: currentUser.name,
+            date: new Date().toISOString(),
+            privacy: 'public',
+            notes: "Incorporate breathing exercises.",
+        },
+        {
+            text: "Regular exercise can improve mental health.",
+            owner: currentUser.name,
+            date: new Date().toISOString(),
+            privacy: 'private',
+            notes: "Encourage patients to find activities they enjoy.",
+        },
+    ]);
     const [snippet, setSnippet] = useState('');
     const [notes, setNotes] = useState(''); // State for notes
     const [editIndex, setEditIndex] = useState(null);
@@ -149,5 +171,3 @@ const SnippetManager = () => {
 };
 
 export default SnippetManager;
-
-
