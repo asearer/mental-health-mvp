@@ -8,8 +8,9 @@ const currentUser = { id: 1, name: 'Practitioner A' }; // Replace with actual us
 const SnippetManager = () => {
     const [snippets, setSnippets] = useState([]);
     const [snippet, setSnippet] = useState('');
+    const [notes, setNotes] = useState(''); // State for notes
     const [editIndex, setEditIndex] = useState(null);
-    const [privacy, setPrivacy] = useState('private'); // New state for privacy setting
+    const [privacy, setPrivacy] = useState('private'); // State for privacy setting
     const [contextMenuVisible, setContextMenuVisible] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
@@ -19,12 +20,13 @@ const SnippetManager = () => {
             alert('Snippet cannot be empty');
             return;
         }
-        
+
         const newSnippet = {
             text: snippet,
             owner: currentUser.name, // Store the owner of the snippet
             date: new Date().toISOString(),
             privacy, // Add privacy setting
+            notes: notes.trim(), // Add notes
         };
 
         if (editIndex !== null) {
@@ -35,7 +37,9 @@ const SnippetManager = () => {
             setSnippets([...snippets, newSnippet]);
         }
 
+        // Reset fields after adding
         setSnippet('');
+        setNotes(''); // Reset notes
         setPrivacy('private'); // Reset privacy after adding
     };
 
@@ -43,6 +47,7 @@ const SnippetManager = () => {
     const handleEditSnippet = (index) => {
         const selectedSnippet = snippets[index];
         setSnippet(selectedSnippet.text);
+        setNotes(selectedSnippet.notes); // Set notes for editing
         setPrivacy(selectedSnippet.privacy);
         setEditIndex(index);
     };
@@ -54,6 +59,7 @@ const SnippetManager = () => {
         if (editIndex === index) {
             setEditIndex(null);
             setSnippet('');
+            setNotes(''); // Reset notes when deleting
             setPrivacy('private');
         }
     };
@@ -72,6 +78,12 @@ const SnippetManager = () => {
     // Close context menu when clicking elsewhere
     const closeContextMenu = () => {
         setContextMenuVisible(false);
+    };
+
+    // Function to insert snippet text into the notes input
+    const insertSnippetIntoNotes = (text) => {
+        setNotes((prevNotes) => `${prevNotes} ${text}`); // Append the snippet text to the notes
+        closeContextMenu(); // Close the context menu after insertion
     };
 
     useEffect(() => {
@@ -98,6 +110,11 @@ const SnippetManager = () => {
                         <option value="public">Public</option>
                     </select>
                 </label>
+                <textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Enter notes for this snippet"
+                />
                 <button onClick={handleAddSnippet}>
                     {editIndex !== null ? 'Update Snippet' : 'Add Snippet'}
                 </button>
@@ -111,12 +128,14 @@ const SnippetManager = () => {
                                 {s.text} <span className="snippet-owner">by {s.owner}</span>
                                 {s.privacy === 'public' && <span className="snippet-public"> (Public)</span>}
                             </span>
+                            {s.notes && <div className="snippet-notes">Notes: {s.notes}</div>} {/* Display notes */}
                             {s.owner === currentUser.name ? ( // Only show edit/delete buttons for owner's snippets
                                 <>
                                     <button onClick={() => handleEditSnippet(index)}>Edit</button>
                                     <button onClick={() => handleDeleteSnippet(index)}>Delete</button>
                                 </>
                             ) : null}
+                            <button onClick={() => insertSnippetIntoNotes(s.text)}>Insert into Notes</button> {/* Button to insert snippet */}
                         </li>
                     ))}
             </ul>
@@ -130,4 +149,5 @@ const SnippetManager = () => {
 };
 
 export default SnippetManager;
+
 
