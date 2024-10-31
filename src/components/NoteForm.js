@@ -26,7 +26,7 @@ const NoteForm = ({ patientId }) => {
   // Custom modules for the Quill editor
   const modules = {
     toolbar: [
-      [{ 'header': [1, 2, false] }],
+      [{ header: [1, 2, false] }],
       ['bold', 'italic', 'underline'],
       ['link', 'image'],
       ['clean'], // Remove formatting button

@@ -1,5 +1,7 @@
 // src/components/NoteSection.js
 import React, { useState } from 'react';
+import ReactQuill from 'react-quill'; // Import react-quill
+import 'react-quill/dist/quill.snow.css'; // Import the Quill styles
 import './NoteSection.css';
 
 const NoteSection = ({ patient }) => {
@@ -33,10 +35,10 @@ const NoteSection = ({ patient }) => {
     return (
         <div>
             <h2>Notes for {patient.name}</h2>
-            <textarea
-                value={notes}
-                onChange={(e) => handleNoteChange(e.target.value)}
-                placeholder="Add your notes here..."
+            <ReactQuill
+                value={notes} // Bind the editor's value to the state
+                onChange={handleNoteChange} // Update the state on change
+                placeholder="Add your notes here..." // Placeholder text for the editor
             />
             <button onClick={saveNotes}>Save Notes</button>
         </div>
@@ -44,6 +46,7 @@ const NoteSection = ({ patient }) => {
 };
 
 export default NoteSection;
+
 
 
 
