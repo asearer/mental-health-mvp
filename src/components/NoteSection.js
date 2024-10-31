@@ -1,32 +1,30 @@
-// src/components/NoteSection.js
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill'; // Import react-quill
-import 'react-quill/dist/quill.snow.css'; // Import the Quill styles
-import './NoteSection.css';
+import React, { useState } from "react";
+import { Editor, EditorState, convertToRaw } from "draft-js";
+import "draft-js/dist/Draft.css";
 
 const NoteSection = ({ patient }) => {
-    // Initialize state to hold notes for the selected patient
-    const [notes, setNotes] = useState('');
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-    // Handle note change for the selected patient
-    const handleNoteChange = (newNote) => {
-        setNotes(newNote);
+    // Function to handle note changes
+    const handleNoteChange = (newEditorState) => {
+        setEditorState(newEditorState);
     };
 
-    // Function to save notes to the server
     const saveNotes = async () => {
+        // Convert content to raw JSON to store it more easily
+        const rawContent = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
         try {
-            const response = await fetch('http://localhost:8000/api/saveNotes', {
-                method: 'POST',
+            const response = await fetch("http://localhost:8000/api/saveNotes", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ id: patient.id, notes }), // Include patient ID with notes
+                body: JSON.stringify({ id: patient.id, notes: rawContent }),
             });
             if (!response.ok) {
-                throw new Error('Failed to save notes');
+                throw new Error("Failed to save notes");
             }
-            alert('Notes saved successfully!');
+            alert("Notes saved successfully!");
         } catch (error) {
             alert(`Error saving notes: ${error.message}`);
         }
@@ -35,17 +33,20 @@ const NoteSection = ({ patient }) => {
     return (
         <div>
             <h2>Notes for {patient.name}</h2>
-            <ReactQuill
-                value={notes} // Bind the editor's value to the state
-                onChange={handleNoteChange} // Update the state on change
-                placeholder="Add your notes here..." // Placeholder text for the editor
-            />
-            <button onClick={saveNotes}>Save Notes</button>
+            <div style={{ border: "1px solid #ddd", padding: "10px", minHeight: "200px" }}>
+                <Editor
+                    editorState={editorState}
+                    onChange={handleNoteChange}
+                    placeholder="Add your notes here..."
+                />
+            </div>
+            <button onClick={saveNotes} style={{ marginTop: "10px" }}>Save Notes</button>
         </div>
     );
 };
 
 export default NoteSection;
+
 
 
 

@@ -1,49 +1,70 @@
+// src/components/NoteForm.js
+
 import React, { useState } from "react";
 import axios from "axios";
-import ReactQuill from "react-quill"; // Import react-quill
-import "react-quill/dist/quill.snow.css"; // Import the Quill styles
+import { Editor, EditorState, RichUtils } from "draft-js";
+import "draft-js/dist/Draft.css"; // Optional: basic Draft.js styling
 
 const NoteForm = ({ patientId }) => {
-  const [noteText, setNoteText] = useState(""); // This will hold the note content
-  const [diagnosis, setDiagnosis] = useState(""); // This will hold the diagnosis
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [diagnosis, setDiagnosis] = useState("");
 
+  // Convert content to plain text for sending to backend
+  const getContentText = () => editorState.getCurrentContent().getPlainText();
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+
     await axios.post(
       `http://localhost:8000/api/patients/${patientId}/notes`,
-      { note_text: noteText, diagnosis }, // Send the note text and diagnosis
+      { note_text: getContentText(), diagnosis }, // Note text in plain form
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    setNoteText(""); // Reset note text after submission
-    setDiagnosis(""); // Reset diagnosis after submission
+    setEditorState(EditorState.createEmpty()); // Reset the editor after submission
+    setDiagnosis("");
   };
 
-  // Custom modules for the Quill editor
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ['bold', 'italic', 'underline'],
-      ['link', 'image'],
-      ['clean'], // Remove formatting button
-    ],
+  // Handle editor state change
+  const onEditorChange = (newState) => setEditorState(newState);
+
+  // Custom formatting options (bold, italic, underline)
+  const handleKeyCommand = (command) => {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+    if (newState) {
+      setEditorState(newState);
+      return "handled";
+    }
+    return "not-handled";
+  };
+
+  // Format buttons to apply styles
+  const applyStyle = (style) => {
+    setEditorState(RichUtils.toggleInlineStyle(editorState, style));
   };
 
   return (
     <div>
       <h4>Add Note</h4>
       <form onSubmit={handleSubmit}>
-        <ReactQuill
-          modules={modules} // Apply the custom modules
-          placeholder="Enter note" // Placeholder text for the editor
-          value={noteText} // Bind the editor's value to the state
-          onChange={setNoteText} // Update the state on change
-          required
-        />
+        <div style={{ border: "1px solid #ccc", minHeight: "200px", padding: "10px" }}>
+          <Editor
+            editorState={editorState}
+            onChange={onEditorChange}
+            handleKeyCommand={handleKeyCommand}
+            placeholder="Enter note..."
+          />
+        </div>
+        <div>
+          <button type="button" onClick={() => applyStyle("BOLD")}>Bold</button>
+          <button type="button" onClick={() => applyStyle("ITALIC")}>Italic</button>
+          <button type="button" onClick={() => applyStyle("UNDERLINE")}>Underline</button>
+        </div>
         <input
           type="text"
           placeholder="Diagnosis"
