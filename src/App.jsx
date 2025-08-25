@@ -1,40 +1,32 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-//import Login from "./components/Login"; // Keep commented out if skipping
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import Login from "./components/Login"; // Temporarily disabled
 import Dashboard from "./components/Dashboard";
 import Navbar from "./components/Navbar";
 import PatientDetail from "./components/PatientDetail";
 import './App.css';
 
-// A simple NotFound component for unmatched routes
+// 404 component
 const NotFound = () => <h2>404 - Page Not Found</h2>;
-
-// Flag to detect development mode
-const isDev = import.meta.env.MODE === "development";
 
 const App = () => {
     return (
         <Router>
             <>
-                <Navbar /> {/* Add Navbar here */}
+                <Navbar /> {/* Always show Navbar */}
                 <main>
                     <Routes>
-                        {/* Conditionally render login route */}
-                        {!isDev && <Route path="/login" element={<Login />} />}
-
                         {/* Dashboard route */}
+                        <Route path="/" element={<Dashboard />} />
                         <Route path="/dashboard" element={<Dashboard />} />
 
                         {/* PatientDetail route */}
                         <Route path="/patients/:id" element={<PatientDetail />} />
 
-                        {/* Root route: skip login in dev */}
-                        <Route
-                            path="/"
-                            element={isDev ? <Navigate to="/dashboard" replace /> : <Login />}
-                        />
+                        {/* Login route temporarily disabled */}
+                        {/* <Route path="/login" element={<Login />} /> */}
 
-                        {/* Catch-all route for 404 */}
+                        {/* Catch-all 404 route */}
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </main>
@@ -44,9 +36,4 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-
 
