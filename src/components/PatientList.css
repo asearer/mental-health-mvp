@@ -1,88 +1,87 @@
 /* src/components/PatientList.css */
 
 .patient-list {
-    border: 1px solid #ccc; /* Optional styling */
-    padding: 15px; /* Increased padding around the patient list */
-    background-color: #f9f9f9; /* Background color */
-    height: 600px; /* Increased height for the container */
-    overflow-y: auto; /* Allow scrolling if content overflows */
-    list-style-type: none; /* Remove bullet points */
-    width: 95%; /* Set width to 95% for a wider view */
-    max-width: 1200px; /* Optional max-width for larger screens */
-    margin: 20px auto; /* Center the container with some top margin */
+  border: 1px solid #ccc; /* Optional styling */
+  padding: 15px; /* Increased padding around the patient list */
+  background-color: #f9f9f9; /* Background color */
+  height: 600px; /* Increased height for the container */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+  list-style-type: none; /* Remove bullet points */
+  width: 95%; /* Set width to 95% for a wider view */
+  max-width: 1200px; /* Optional max-width for larger screens */
+  margin: 20px auto; /* Center the container with some top margin */
 }
 
 /* Patient item styling */
 .patient-item {
-    display: flex; /* Use flexbox for alignment */
-    justify-content: space-between; /* Space between name and button container */
-    align-items: center; /* Align items vertically */
-    padding: 10px; /* Padding for better appearance */
-    margin-bottom: 10px; /* Spacing between items */
-    border: 1px solid #ddd; /* Optional border for separation */
-    border-radius: 5px; /* Optional rounded corners */
-    background-color: #fff; /* White background for the item */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between name and button container */
+  align-items: center; /* Align items vertically */
+  padding: 10px; /* Padding for better appearance */
+  margin-bottom: 10px; /* Spacing between items */
+  border: 1px solid #ddd; /* Optional border for separation */
+  border-radius: 5px; /* Optional rounded corners */
+  background-color: #fff; /* White background for the item */
 }
 
 /* Button container to manage layout */
 .button-container {
-    display: flex; /* Use flexbox for button alignment */
-    gap: 8px; /* Space between buttons */
+  display: flex; /* Use flexbox for button alignment */
+  gap: 8px; /* Space between buttons */
 }
 
 /* Button styling */
 .button {
-    background-color: blue; /* Button color */
-    color: white; /* Text color */
-    padding: 4px 8px; /* Reduced padding for smaller buttons */
-    font-size: 0.9rem; /* Slightly increased font size for better readability */
-    text-decoration: none; /* Remove underline */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s; /* Animation */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    min-width: 100px; /* Ensure buttons have a minimum width */
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflow */
+  background-color: blue; /* Button color */
+  color: white; /* Text color */
+  padding: 4px 8px; /* Reduced padding for smaller buttons */
+  font-size: 0.9rem; /* Slightly increased font size for better readability */
+  text-decoration: none; /* Remove underline */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s; /* Animation */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  min-width: 100px; /* Ensure buttons have a minimum width */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow */
 }
 
 /* Hover effect for buttons */
 .button:hover {
-    background-color: darkblue; /* Darker blue on hover */
+  background-color: darkblue; /* Darker blue on hover */
 }
 
 /* Link styling */
 .patient-link {
-    text-decoration: none; /* Remove underline */
-    color: black; /* Text color */
+  text-decoration: none; /* Remove underline */
+  color: black; /* Text color */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .patient-list {
-        width: 95%; /* Adjust width for medium screens */
-        height: 500px; /* Optional: reduce height for smaller screens */
-    }
+  .patient-list {
+    width: 95%; /* Adjust width for medium screens */
+    height: 500px; /* Optional: reduce height for smaller screens */
+  }
 
-    .button {
-        min-width: 80px; /* Smaller min-width for medium screens */
-    }
+  .button {
+    min-width: 80px; /* Smaller min-width for medium screens */
+  }
 }
 
 @media (max-width: 480px) {
-    .patient-list {
-        width: 100%; /* Full width for small screens */
-        height: 400px; /* Reduce height for very small screens */
-    }
+  .patient-list {
+    width: 100%; /* Full width for small screens */
+    height: 400px; /* Reduce height for very small screens */
+  }
 
-    .button {
-        padding: 2px 4px; /* Further reduced padding for smaller screens */
-        font-size: 0.8rem; /* Smaller font size */
-        min-width: 70px; /* Minimum width adjustment */
-    }
+  .button {
+    padding: 2px 4px; /* Further reduced padding for smaller screens */
+    font-size: 0.8rem; /* Smaller font size */
+    min-width: 70px; /* Minimum width adjustment */
+  }
 
-    .patient-item {
-        padding: 6px; /* Reduced padding */
-        margin-bottom: 6px; /* Adjusted spacing */
-    }
+  .patient-item {
+    padding: 6px; /* Reduced padding */
+    margin-bottom: 6px; /* Adjusted spacing */
+  }
 }
-

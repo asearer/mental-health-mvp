@@ -61,9 +61,15 @@ const NoteForm = ({ patientId }) => {
           />
         </div>
         <div>
-          <button type="button" onClick={() => applyStyle("BOLD")}>Bold</button>
-          <button type="button" onClick={() => applyStyle("ITALIC")}>Italic</button>
-          <button type="button" onClick={() => applyStyle("UNDERLINE")}>Underline</button>
+          <button type="button" onClick={() => applyStyle("BOLD")}>
+            Bold
+          </button>
+          <button type="button" onClick={() => applyStyle("ITALIC")}>
+            Italic
+          </button>
+          <button type="button" onClick={() => applyStyle("UNDERLINE")}>
+            Underline
+          </button>
         </div>
         <input
           type="text"

@@ -45,7 +45,8 @@ button:hover {
 }
 
 /* Styling for form elements */
-input, textarea {
+input,
+textarea {
   width: 100%;
   padding: 10px;
   margin: 10px 0;

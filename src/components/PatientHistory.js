@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const PatientHistory = ({ historyData }) => {
   // Ensure historyData is an array before trying to map it
@@ -22,10 +22,3 @@ const PatientHistory = ({ historyData }) => {
 };
 
 export default PatientHistory;
-
-
-
-
-
-
-

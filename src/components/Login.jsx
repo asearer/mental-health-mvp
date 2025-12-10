@@ -18,10 +18,7 @@ const Login = () => {
     e.preventDefault();
 
     // Check if credentials match
-    if (
-      username === hardcodedCredentials.username &&
-      password === hardcodedCredentials.password
-    ) {
+    if (username === hardcodedCredentials.username && password === hardcodedCredentials.password) {
       // Redirect to Dashboard on successful login
       navigate("/dashboard");
     } else {
@@ -57,6 +54,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-

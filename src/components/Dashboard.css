@@ -14,7 +14,6 @@
   height: calc(80vh - 100px); /* Adjusted height to account for titles and spacing */
 }
 
-
 .patient-list-container {
   width: 30%; /* Set width of the patient list */
   overflow-y: auto; /* Enable vertical scrolling */
@@ -33,7 +32,7 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   padding: 20px;
 }
 
@@ -44,11 +43,11 @@
 }
 
 .patient-list-container {
-  width: 30%; 
-  overflow-y: auto; 
+  width: 30%;
+  overflow-y: auto;
   padding: 10px;
-  border-right: 1px solid #ccc; 
-  background-color: #f9f9f9; 
+  border-right: 1px solid #ccc;
+  background-color: #f9f9f9;
 }
 
 .patient-detail-container {
@@ -56,30 +55,13 @@
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  padding: 20px; 
+  padding: 20px;
   margin-top: 20px; /* Space above the details */
   height: 100%; /* Ensure it takes the full height of the parent */
 }
-
 
 .note-section-container {
   width: 100%; /* Full width for notes section */
   padding: 10px;
   margin-top: 20px; /* Spacing between details and notes */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  

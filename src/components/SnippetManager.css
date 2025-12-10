@@ -1,55 +1,55 @@
 /* src/components/SnippetManager.css */
 
 .snippet-manager {
-    position: relative;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+  position: relative;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
 .snippet-form {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .snippet-list {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .snippet-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
 }
 
 .snippet-text {
-    cursor: pointer;
-    color: #007bff;
+  cursor: pointer;
+  color: #007bff;
 }
 
 .snippet-text:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .context-menu {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 .context-menu button {
-    background: none;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
 }
 
 .context-menu button:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }

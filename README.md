@@ -1,29 +1,84 @@
 # Mental Health MVP
 
-## Overview
+A robust, production-ready full-stack application for mental health management.
 
-The **Mental Health MVP** is a web application designed to assist healthcare providers in managing patient information with a focus on mental health. This application offers an interface for viewing patient details, adding therapy notes, and maintaining an organized list of patients along with their medical histories.
+## Features
+- **Patient Management**: Add, view, update, and discharge patients.
+- **Therapy Notes**: Log and view therapy notes per patient.
+- **Group Sessions**: Manage patient groups.
+- **Snippets**: Quick text snippets for counselors.
+- **Full Persistence**: Data is saved to `backend/data/db.json`.
 
-## Purpose
+## Tech Stack
+- **Frontend**: React, Vite
+- **Backend**: Node.js, Express
+- **Testing**: Vitest, React Testing Library
+- **Linting**: ESLint, Prettier
 
-The primary goal of this project is to streamline the management of mental health patient data, enhancing the workflow for mental health professionals. By consolidating essential patient information in a single platform, this system aims to improve the quality of care and facilitate better communication among healthcare providers.
+## Getting Started
 
-## Current Development Stage
+### Prerequisites
+- Node.js (v16+)
+- npm
 
-It is important to note that this project is in the early stages of development, specifically focusing on creating an initial demo build as a minimum viable product (MVP). The current functionality includes displaying a list of patients and fetching their details upon request. However, many features are still in progress or planned for future implementation.
+### Installation
+1. Install dependencies:
+   ```bash
+   npm install
+   cd backend && npm install
+   ```
 
-The project will undergo continuous improvements, including but not limited to:
+### Development
+To run the application in development mode with hot-reloading:
 
-- Enhanced error handling and user feedback mechanisms.
-- Integration with a backend database for persistent data storage.
-- A more comprehensive user interface and experience enhancements.
-- User authentication and access control.
-- Advanced patient records management and detailed note-taking features.
+1. Start the backend:
+   ```bash
+   cd backend
+   npm run dev
+   ```
+   Backend runs on `http://localhost:8000`.
 
-As this project evolves, contributions and feedback are encouraged to help shape its future direction and functionality.
+2. Start the frontend (in a new terminal):
+   ```bash
+   npm run dev
+   ```
+   Frontend runs on `http://localhost:3000` (or 5173 depending on Vite).
 
-## Conclusion
+### Production
+To build and run the production version:
 
-In summary, the **Mental Health MVP** is a work in progress that aims to provide a foundational tool for managing mental health patient information. As the project continues to develop, it will be refined and expanded to meet the needs of mental health professionals effectively as time and the project progress.
+1. Build the frontend:
+   ```bash
+   npm run build
+   ```
 
----
+2. Start the backend (which serves the built frontend):
+   ```bash
+   npm start --prefix backend
+   ```
+   Visit `http://localhost:8000`.
+
+### Docker
+Run the application using Docker:
+
+```bash
+docker-compose up --build
+```
+The app will be available at `http://localhost:8000`.
+Data is persisted in the `backend/data` directory on your host.
+
+## Testing
+Run unit tests:
+```bash
+npm test
+```
+
+## Linting & Formatting
+Check for linting errors:
+```bash
+npm run lint
+```
+Format code:
+```bash
+npm run format
+```
